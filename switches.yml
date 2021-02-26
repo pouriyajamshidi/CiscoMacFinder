@@ -1,0 +1,14 @@
+France-DC:
+  - name: FR-SW-TOR-R1-Rack1
+    mgmt_ip: 172.16.16.1
+    port: 22
+  - name: FR-SW-TOR-R2-Rack2
+    mgmt_ip: 172.16.16.2
+    port: 22
+Germany-DC:
+  - name: DE-SW-TOR-R1-Rack1
+    mgmt_ip: 172.18.18.1
+    port: 222
+  - name: DE-SW-TOR-R2-Rack2
+    mgmt_ip: 172.18.18.2
+    port: 222
