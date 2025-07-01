@@ -1,2 +1,2 @@
-netmiko==4.5.0
+netmiko==4.6.0
 PyYAML>=5.4
