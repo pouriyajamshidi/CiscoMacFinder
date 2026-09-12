@@ -4,11 +4,13 @@ This cross-platform Python script helps you find a MAC address on your Cisco swi
 
 Use the included ```YAML``` file to [define](#usage) different data centers, floors, etc. so that the program stops looking inside other data centers or floors upon finding a MAC address. **There is no limit on the number of sites or devices that you define, everything will be handled dynamically**.
 
+Switches within a site are queried in parallel, so a site of fifty devices takes about as long as its slowest switch.
+
 For your convenience, it [takes](#run-it-like) a MAC address in any notation (```Linux```, ```Windows```, ```Cisco```) and automatically converts it to Cisco format.
 
 ## Requirements
 
-```Netmiko``` and ```PyYAML``` are required to run this script. You can install them using below command.
+Python 3.13 or newer, plus ```Netmiko``` and ```PyYAML```. You can install the latter two using below command.
 
 ```bash
 pip3 install -r requirements.txt
@@ -35,6 +37,8 @@ Germany-DC:
     port: 222
 
 ```
+
+```port``` is optional and defaults to ```22```.
 
 Make the script executable:
 
@@ -68,19 +72,28 @@ OR
 python3 CiscoMacFinder.py <MAC Address>
 ```
 
-For example:
+### Options
 
-```python
-python3 CiscoMacFinder.py 8041.a473.453b
+```text
+-s, --switches   path to the YAML file (default: switches.yml)
+-u, --username   login username (default: the CISCO_USERNAME environment variable)
+-w, --workers    switches polled in parallel (default: 10)
+```
 
-OR
+You are prompted for the username and password unless they are supplied through ```--username``` and the ```CISCO_USERNAME``` / ```CISCO_PASSWORD``` environment variables:
 
-python3 CiscoMacFinder.py 80:41:a4:73:45:3b
+```bash
+./CiscoMacFinder.py 8041.a473.453b --switches ~/lab/switches.yml --workers 25
+```
 
-OR
+Lower ```--workers``` if your TACACS or RADIUS server rate-limits simultaneous authentications.
 
-python3 CiscoMacFinder.py 80-41-a4-73-45-3b
+### Exit codes
 
+```text
+0   MAC address found
+1   MAC address not found
+2   invalid MAC address, or the YAML file is missing or malformed
 ```
 
 ## Tested on
@@ -94,4 +107,3 @@ Pull requests are welcome.
 ## License
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-
